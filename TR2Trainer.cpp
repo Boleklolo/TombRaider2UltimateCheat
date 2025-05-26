@@ -24,10 +24,21 @@ const std::vector<short> brokenAnimIDs = { 155, 139, 24, 25 }; // Animations tha
 constexpr uintptr_t addressAnimationCheat = 0x001207BC; // Address of the current animation (technically a pointer)
 constexpr uintptr_t pointerOffsetAnimationCheat = 0x14; // Offset to the pointer
 
+
+
+
 // Health Cheat (Because Im too lazy to turn off damage for every fucking kind of ammunition brand they shootin)
 constexpr uint16_t desiredHealthValue = 1000; // The value that sets health of laura craft (I am steve)
 constexpr uintptr_t baseAddressHealth = 0x001207BC; // Base address of the health pointer
 constexpr uintptr_t pointerOffsetHealth = 0x22; // Offset to the health pointer
+
+
+// Noclip cheat doomguy style (Walk into a wall and end up on top of it rofl)
+constexpr uintptr_t noclipAddress = 0x00028ED9; // Address of the noclip
+uint8_t opcodeNoclipOriginal[5] = { 0xE8, 0x82, 0x13, 0x00, 0x00 }; // Original bytes for the noclip
+//Tomb2Cheat.exe+28ED9 - E8 82130000           - call Tomb2Cheat.exe+2A260
+uint8_t opcodeNoclipPatched[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // Patched bytes for the noclip (om om om nop nop nop silly shit)
+static bool noclipCheatPatched = false;
 
 // Walk underwater (Holy shit aquaman)
 constexpr uintptr_t underwaterPatchAddress1 = 0x00030466; // Fixed address for the water entrance by kaboom
@@ -157,6 +168,27 @@ int wmain() {
                     }
                 }
                 Sleep(50);
+            }
+        }
+    );
+    commands.emplace_back(
+        L"Noclip (Doom style) !! ADD OTHER CALLS RELATED FOR JUMPING OR OVERRIDE THE WHOLE FUNCTION",
+        noclipAddress,
+        std::vector<uintptr_t>{},
+        [](HANDLE hProc, uintptr_t noclipAddress, std::shared_ptr<std::atomic<bool>>& active) {
+            while (*active) {
+                // Keep the patch applied while active
+                if (!noclipCheatPatched) {
+                    if (WriteProcessMemory(hProc, (LPVOID)noclipAddress, opcodeNoclipPatched, sizeof(opcodeNoclipPatched), nullptr)) {
+                        noclipCheatPatched = true;
+                    }
+                }
+                Sleep(50);
+            }
+            // Revert when deactivated
+            if (noclipCheatPatched) {
+                WriteProcessMemory(hProc, (LPVOID)noclipAddress, opcodeNoclipOriginal, sizeof(opcodeNoclipOriginal), nullptr);
+                noclipCheatPatched = false;
             }
         }
     );
