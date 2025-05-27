@@ -27,9 +27,10 @@
               "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\include\\thread",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\include\\thread",
               "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\include\\thread",
-              "ViewState": "AgIAAFwAAAAAAAAAAAAWwGkAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAFQAAAAAAAAAAAAWwGEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2025-05-25T16:49:57.013Z"
+              "WhenOpened": "2025-05-27T18:35:38.623Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
@@ -39,9 +40,9 @@
               "RelativeDocumentMoniker": "TR2Trainer.cpp",
               "ToolTip": "C:\\Users\\mateu\\source\\repos\\TR2Trainer\\TR2Trainer.cpp",
               "RelativeToolTip": "TR2Trainer.cpp",
-              "ViewState": "AgIAAKAAAAAAAAAAAAAswK4AAABjAAAAAAAAAA==",
+              "ViewState": "AgIAANcBAAAAAAAAAAAowN0BAACGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
-              "WhenOpened": "2025-05-23T12:07:35.617Z",
+              "WhenOpened": "2025-05-27T18:03:57.202Z",
               "EditorCaption": ""
             }
           ]
