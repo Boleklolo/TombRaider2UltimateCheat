@@ -38,7 +38,7 @@ const std::vector<short> brokenAnimIDs = { // Problematic animations
     139, // Rolling ball death
     24, // Fall stumble
     25 // Fall death - "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA *crack*"
-    }; 
+    }; // Add some more and try again with separating ebcause I know the thread issuea again
 constexpr uintptr_t addressAnimationCheat = 0x001207BC; // Base address
 constexpr uintptr_t pointerOffsetAnimationCheat = 0x14; // Pointer offset
 
@@ -48,9 +48,14 @@ constexpr uintptr_t baseAddressHealth = 0x001207BC; // Base address
 constexpr uintptr_t pointerOffsetHealth = 0x22; // Pointer offset
 
 // Noclip Cheat Configuration
-constexpr uintptr_t noclipAddress = 0x00028ED9; // Address to patch
-uint8_t opcodeNoclipOriginal[5] = { 0xE8, 0x82, 0x13, 0x00, 0x00 }; // Original bytes
+constexpr uintptr_t noclipAddress = 0x00028EFD; // Address to patch
+uint8_t opcodeNoclipOriginal[5] = { 0xE8, 0xCE, 0x13, 0x00, 0x00 }; // Original bytes
 uint8_t opcodeNoclipPatched[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions
+
+//! Worse noclip with no fall, maybe implement as another cheat?
+constexpr uintptr_t noclipAlt2Address = 0x00028ED9; // Address to patch
+uint8_t opcodeNoclipAlt2Original[5] = { 0xE8, 0x82, 0x13, 0x00, 0x00 }; // Original bytes
+uint8_t opcodeNoclipAlt2Patched[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions
 
 // Underwater Cheat Configuration
 constexpr uintptr_t underwaterPatchAddress1 = 0x00030466; // First patch location
@@ -83,6 +88,104 @@ constexpr uintptr_t flareCheatAddress = 0x000317C4; // Address to patch for unli
 constexpr uintptr_t pointerOffsetFlareCheat = 0x04; // Pointer offset for flare cheat patch
 constexpr uint16_t desiredFlareTime = 100; // Desired flare life lock
 
+// No static collision
+//Tomb2Cheat.exe+12CD6 - E8 E5020000           - call Tomb2Cheat.exe+12FC0
+constexpr uintptr_t noStaticCheatAddress = 0x00012CD6; // Address to the no collision to statics
+uint8_t opcodeNoStaticCollisionOriginal[5] = { 0xE8, 0xE5, 0x02, 0x00, 0x00 };
+uint8_t opcodeNoStaticCollisionPatched[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 };
+
+// No baddie collision
+//Tomb2Cheat.exe+13789 - E8 32000000           - call Tomb2Cheat.exe+137C0
+constexpr uintptr_t noBaddieCollisionAddress = 0x00013789; // Addy
+uint8_t opcodeNoBaddieCollisionOriginal[5] = { 0xE8, 0x32, 0x00, 0x00, 0x00 }; // Originny
+uint8_t opcodeNoBaddieCollisionPatched[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // Noppies
+
+
+// No creature collision
+//Tomb2Cheat.exe+138AB - E8 60010000           - call Tomb2Cheat.exe+13A10
+constexpr uintptr_t noCreatureCollisionAddress = 0x000138AB; // Address to patch for no creature collision
+uint8_t opcodeNoCreatureCollisionOriginal[5] = { 0xE8, 0x60, 0x01, 0x00, 0x00 }; // Original bytes
+uint8_t opcodeNoCreatureCollisionPatched[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions
+
+// No door collision
+// This patch finna be so fucking big im gonna cry
+// Actually, lemme rephrase that
+// 
+// 
+// // 🚪💀 Door collision is OFFICIALLY CANCELLED.
+// This patch finna be so fucking fat it’s gonna need gzip compression just to compile.
+// 
+// 
+// Helpers
+// Door collision
+// Tomb2Cheat.exe+13942 - E8 D9030000           - call Tomb2Cheat.exe+13D20
+// Tomb2Cheat.exe+13950 - E8 0BC10200           - call Tomb2Cheat.exe+3FA60
+// Tomb2Cheat.exe+1397A - E8 91000000           - call Tomb2Cheat.exe+13A10
+// Tomb2Cheat.exe+1398B - E8 80000000           - call Tomb2Cheat.exe+13A10
+// Door openers at start or whatever
+// Tomb2Cheat.exe+353A0 - E8 5BFDFFFF           - call Tomb2Cheat.exe+35100
+// Tomb2Cheat.exe+353A9 - E8 52FDFFFF           - call Tomb2Cheat.exe+35100
+// Tomb2Cheat.exe+35539 - E8 C2FBFFFF           - call Tomb2Cheat.exe+35100
+// Tomb2Cheat.exe+35542 - E8 B9FBFFFF           - call Tomb2Cheat.exe+35100
+// Tomb2Cheat.exe+35600 - E8 FBFAFFFF           - call Tomb2Cheat.exe+35100
+// Tomb2Cheat.exe+3560C - E8 EFFAFFFF           - call Tomb2Cheat.exe+35100
+// Tomb2Cheat.exe+35618 - E8 E3FAFFFF           - call Tomb2Cheat.exe+35100
+// Tomb2Cheat.exe+35624 - E8 D7FAFFFF           - call Tomb2Cheat.exe+35100
+
+// Always replace the call +35100 with +35150 (close door to open door btw)
+
+// Door collision patch addresses
+constexpr uintptr_t doorCollisionPatchAddress1 = 0x00013942; // First patch location
+constexpr uintptr_t doorCollisionPatchAddress2 = 0x00013950; // Second patch location
+constexpr uintptr_t doorCollisionPatchAddress3 = 0x0001397A; // Third patch location
+constexpr uintptr_t doorCollisionPatchAddress4 = 0x0001398B; // Fourth patch location
+// Door opener patch addresses
+constexpr uintptr_t doorOpenerPatchAddress1 = 0x000353A0; // First door opener patch
+constexpr uintptr_t doorOpenerPatchAddress2 = 0x000353A9; // Second door opener patch
+constexpr uintptr_t doorOpenerPatchAddress3 = 0x00035539; // Third door opener patch
+constexpr uintptr_t doorOpenerPatchAddress4 = 0x00035542; // Fourth door opener patch
+constexpr uintptr_t doorOpenerPatchAddress5 = 0x00035600; // Fifth door opener patch
+constexpr uintptr_t doorOpenerPatchAddress6 = 0x0003560C; // Sixth door opener patch
+constexpr uintptr_t doorOpenerPatchAddress7 = 0x00035618; // Seventh door opener patch
+constexpr uintptr_t doorOpenerPatchAddress8 = 0x00035624; // Eighth door opener patch
+
+
+// Door collision patch original bytes
+uint8_t opcodeDoorCollisionOriginal1[5] = { 0xE8, 0xD9, 0x03, 0x00, 0x00 }; // Original bytes for first patch
+uint8_t opcodeDoorCollisionOriginal2[5] = { 0xE8, 0x0B, 0xC1, 0x02, 0x00 }; // Original bytes for second patch
+uint8_t opcodeDoorCollisionOriginal3[5] = { 0xE8, 0x91, 0x00, 0x00, 0x00 }; // Original bytes for third patch
+uint8_t opcodeDoorCollisionOriginal4[5] = { 0xE8, 0x80, 0x00, 0x00, 0x00 }; // Original bytes for fourth patch
+// Door opener patch original bytes
+uint8_t opcodeDoorOpenerOriginal1[5] = { 0xE8, 0x5B, 0xFD, 0xFF, 0xFF }; // Original bytes for first door opener patch
+uint8_t opcodeDoorOpenerOriginal2[5] = { 0xE8, 0x52, 0xFD, 0xFF, 0xFF }; // Original bytes for second door opener patch
+uint8_t opcodeDoorOpenerOriginal3[5] = { 0xE8, 0xC2, 0xFB, 0xFF, 0xFF }; // Original bytes for third door opener patch
+uint8_t opcodeDoorOpenerOriginal4[5] = { 0xE8, 0xB9, 0xFB, 0xFF, 0xFF }; // Original bytes for fourth door opener patch
+uint8_t opcodeDoorOpenerOriginal5[5] = { 0xE8, 0xFB, 0xFA, 0xFF, 0xFF }; // Original bytes for fifth door opener patch
+uint8_t opcodeDoorOpenerOriginal6[5] = { 0xE8, 0xEF, 0xFA, 0xFF, 0xFF }; // Original bytes for sixth door opener patch
+uint8_t opcodeDoorOpenerOriginal7[5] = { 0xE8, 0xE3, 0xFA, 0xFF, 0xFF }; // Original bytes for seventh door opener patch
+uint8_t opcodeDoorOpenerOriginal8[5] = { 0xE8, 0xD7, 0xFA, 0xFF, 0xFF }; // Original bytes for eighth door opener patch
+// Door collision patch patched bytes
+uint8_t opcodeDoorCollisionPatched1[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions for first patch
+uint8_t opcodeDoorCollisionPatched2[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions for second patch
+uint8_t opcodeDoorCollisionPatched3[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions for third patch
+uint8_t opcodeDoorCollisionPatched4[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions for fourth patch
+uint8_t opcodeDoorOpenerPatched1[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions for first door opener patch
+uint8_t opcodeDoorOpenerPatched2[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions for second door opener patch
+uint8_t opcodeDoorOpenerPatched3[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions for third door opener patch
+uint8_t opcodeDoorOpenerPatched4[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions for fourth door opener patch
+uint8_t opcodeDoorOpenerPatched5[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions for fifth door opener patch
+uint8_t opcodeDoorOpenerPatched6[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions for sixth door opener patch
+uint8_t opcodeDoorOpenerPatched7[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions for seventh door opener patch
+uint8_t opcodeDoorOpenerPatched8[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions for eighth door opener patch
+
+
+
+
+
+
+
+
+
 // ====================================
 // Global State Variables
 // ====================================
@@ -99,6 +202,11 @@ static bool underwaterPatched = false; // Combined state
 static bool slopePatched = false;
 static bool slowFallCheatPatched = false;
 static bool airCheatPatched = false;
+static bool noStaticCollisionPatched = false;
+static bool noBaddieCollisionPatched = false;
+static bool noCreatureCollisionPatched = false;
+static bool altNoclipCheatPatched = false; // Alternative noclip state
+static bool noDoorCollisionPatched = false; // Combined state for door collision
 // Cheat Management
 struct Cheat {
     std::string name;
@@ -326,6 +434,30 @@ Patch slopePatches[] = {
     { slopePatchAddress1, opcodeSlopePatched1, sizeof(opcodeSlopePatched1), opcodeSlopeOriginal1 },
     { slopePatchAddress2, opcodeSlopePatched2, sizeof(opcodeSlopePatched2), opcodeSlopeOriginal2 }
 };
+
+/**
+ * No door collision and opener patches
+ */
+
+ // I swear to God if someone asks me why there are 12 hardcoded patches here,
+ // I will personally walk into their office and replace their chair with a TR2 spike trap.
+ // This is how we're doing it now. No loops, no macros, no nothing.
+ // I regret nothing.
+Patch doorCollisionPatches[] = {
+    { doorCollisionPatchAddress1, opcodeDoorCollisionPatched1, sizeof(opcodeDoorCollisionPatched1), opcodeDoorCollisionOriginal1 },
+    { doorCollisionPatchAddress2, opcodeDoorCollisionPatched2, sizeof(opcodeDoorCollisionPatched2), opcodeDoorCollisionOriginal2 },
+    { doorCollisionPatchAddress3, opcodeDoorCollisionPatched3, sizeof(opcodeDoorCollisionPatched3), opcodeDoorCollisionOriginal3 },
+    { doorCollisionPatchAddress4, opcodeDoorCollisionPatched4, sizeof(opcodeDoorCollisionPatched4), opcodeDoorCollisionOriginal4 },
+    { doorOpenerPatchAddress1, opcodeDoorOpenerPatched1, sizeof(opcodeDoorOpenerPatched1), opcodeDoorOpenerOriginal1 },
+    { doorOpenerPatchAddress2, opcodeDoorOpenerPatched2, sizeof(opcodeDoorOpenerPatched2), opcodeDoorOpenerOriginal2 },
+    { doorOpenerPatchAddress3, opcodeDoorOpenerPatched3, sizeof(opcodeDoorOpenerPatched3), opcodeDoorOpenerOriginal3 },
+    { doorOpenerPatchAddress4, opcodeDoorOpenerPatched4, sizeof(opcodeDoorOpenerPatched4), opcodeDoorOpenerOriginal4 },
+    { doorOpenerPatchAddress5, opcodeDoorOpenerPatched5, sizeof(opcodeDoorOpenerPatched5), opcodeDoorOpenerOriginal5 },
+    { doorOpenerPatchAddress6, opcodeDoorOpenerPatched6, sizeof(opcodeDoorOpenerPatched6), opcodeDoorOpenerOriginal6 },
+    { doorOpenerPatchAddress7, opcodeDoorOpenerPatched7, sizeof(opcodeDoorOpenerPatched7), opcodeDoorOpenerOriginal7 },
+    { doorOpenerPatchAddress8, opcodeDoorOpenerPatched8, sizeof(opcodeDoorOpenerPatched8), opcodeDoorOpenerOriginal8 }
+};
+
 /**
  * Applies or reverts multiple memory patches
  * @param enable Whether to apply patches
@@ -374,6 +506,92 @@ void ToggleSlopeCheat(bool enable) {
         slopePatched = false;
     }
 }
+
+/**
+ * Toggles no static collision cheat
+ * @param enable Whether to enable
+ */
+void ToggleStatic(bool enable) {
+    if (!processAttached) return;
+    if (enable && !noStaticCollisionPatched) {
+        WriteProcessMemory(processHandle, (LPVOID)(moduleBase + noStaticCheatAddress),
+            opcodeNoStaticCollisionPatched, sizeof(opcodeNoStaticCollisionPatched), nullptr);
+        noStaticCollisionPatched = true;
+    }
+    else if (!enable && noStaticCollisionPatched) {
+        WriteProcessMemory(processHandle, (LPVOID)(moduleBase + noStaticCheatAddress),
+            opcodeNoStaticCollisionOriginal, sizeof(opcodeNoStaticCollisionOriginal), nullptr);
+        noStaticCollisionPatched = false;
+    }
+}
+/**
+ * Toggles no baddie collision cheat
+ * @param enable Whether to enable
+ */
+void ToggleNoBaddieCollision(bool enable) {
+    if (!processAttached) return;
+    if (enable && !noBaddieCollisionPatched) {
+        WriteProcessMemory(processHandle, (LPVOID)(moduleBase + noBaddieCollisionAddress),
+            opcodeNoBaddieCollisionPatched, sizeof(opcodeNoBaddieCollisionPatched), nullptr);
+        noBaddieCollisionPatched = true;
+    }
+    else if (!enable && noBaddieCollisionPatched) {
+        WriteProcessMemory(processHandle, (LPVOID)(moduleBase + noBaddieCollisionAddress),
+            opcodeNoBaddieCollisionOriginal, sizeof(opcodeNoBaddieCollisionOriginal), nullptr);
+        noBaddieCollisionPatched = false;
+    }
+}
+/**
+ * Toggles no creature collision cheat
+ * @param enable Whether to enable
+ */
+void ToggleNoCreatureCollision(bool enable) {
+    if (!processAttached) return;
+    if (enable && !noCreatureCollisionPatched) {
+        WriteProcessMemory(processHandle, (LPVOID)(moduleBase + noCreatureCollisionAddress),
+            opcodeNoCreatureCollisionPatched, sizeof(opcodeNoCreatureCollisionPatched), nullptr);
+        noCreatureCollisionPatched = true;
+    }
+    else if (!enable && noCreatureCollisionPatched) {
+        WriteProcessMemory(processHandle, (LPVOID)(moduleBase + noCreatureCollisionAddress),
+            opcodeNoCreatureCollisionOriginal, sizeof(opcodeNoCreatureCollisionOriginal), nullptr);
+        noCreatureCollisionPatched = false;
+    }
+}
+/**
+ * Toggles alternate noclip cheat
+ * @param enable Whether to enable
+ */
+void ToggleAltNoclip(bool enable) {
+    if (!processAttached) return;
+    if (enable && !altNoclipCheatPatched) {
+        WriteProcessMemory(processHandle, (LPVOID)(moduleBase + noclipAlt2Address),
+            opcodeNoclipAlt2Patched, sizeof(opcodeNoclipAlt2Patched), nullptr);
+        altNoclipCheatPatched = true;
+    }
+    else if (!enable && altNoclipCheatPatched) {
+        WriteProcessMemory(processHandle, (LPVOID)(moduleBase + noclipAlt2Address),
+            opcodeNoclipAlt2Original, sizeof(opcodeNoclipAlt2Original), nullptr);
+        altNoclipCheatPatched = false;
+    }
+}
+/**
+ * Toggles no door collision cheat
+ * @param enable Whether to enable
+ **/ 
+void ToggleNoDoorCollision(bool enable) {
+    if (!processAttached) return;
+    if (enable && !noDoorCollisionPatched) {
+        ToggleMultiPatch(true, doorCollisionPatches, sizeof(doorCollisionPatches) / sizeof(Patch));
+        noDoorCollisionPatched = true;
+    }
+    else if (!enable && noDoorCollisionPatched) {
+        ToggleMultiPatch(false, doorCollisionPatches, sizeof(doorCollisionPatches) / sizeof(Patch));
+        noDoorCollisionPatched = false;
+    }
+}
+
+
 /**
  * Worker thread for animation fix cheat
  * @param active Atomic flag to control execution
@@ -450,6 +668,11 @@ void InitializeCheats() {
     static bool slopeActive = false;
     static bool slowFallActive = false;
     static bool unlimitedAirActive = false; // Unlimited air cheat
+    static bool staticActive = false; // No static collision cheat
+    static bool noBaddieCollisionActive = false; // No baddie collision cheat
+    static bool noCreatureCollisionActive = false; // No creature collision cheat
+    static bool noDoorCollisionActive = false; // No door collision cheat
+    static bool altNoclipActive = false; // Alternate noclip cheat
     static std::atomic<bool> flareCheatActiveAtomic{ false };
     static std::atomic<bool> animationFixActiveAtomic{ false };
     static std::atomic<bool> healthCheatActiveAtomic{ false };
@@ -475,34 +698,77 @@ void InitializeCheats() {
         });
     // Unlimited Flare Cheat
     cheats.push_back({
-        "Unlimited Flare Life (WARNING: DO NOT USE WITH ANIMATION CHEAT ABOVE) (Note: Perhaps a conditional to turn off the checkbox?)",
+        "Unlimited Flare Life",
         &flareCheatActive,
         std::thread(),
         [&]() {
             flareCheatActive = true;
             flareCheatActiveAtomic = true;
-            cheats[0].thread = std::thread(FlareCheatThread, std::ref(flareCheatActiveAtomic));
+            cheats[1].thread = std::thread(FlareCheatThread, std::ref(flareCheatActiveAtomic));
         },
         [&]() {
             flareCheatActive = false;
             flareCheatActiveAtomic = false;
-            if (cheats[0].thread.joinable()) cheats[0].thread.join();
+            if (cheats[1].thread.joinable()) cheats[1].thread.join();
         },
         nullptr
         });
     // Noclip Cheat
     cheats.push_back({
-        "Noclip (No collision) (Doom style) (Note: Incomplete)",
+        "Noclip (No collision) (Doom style) (Works well with slope fix)",
         &noclipActive,
         std::thread(),
         [&]() { ToggleNoclip(true); },
         [&]() { ToggleNoclip(false); },
         nullptr
         });
-
+    // No static collision Cheat
+    cheats.push_back({
+        "No Static Object Collision",
+        &staticActive,
+        std::thread(),
+        [&]() { ToggleStatic(true); },
+        [&]() { ToggleStatic(false); },
+        nullptr
+        });
+    // No baddie collision Cheat
+    cheats.push_back({
+        "No Baddie Collision",
+        &noBaddieCollisionActive,
+        std::thread(),
+        [&]() { ToggleNoBaddieCollision(true); },
+        [&]() { ToggleNoBaddieCollision(false); },
+        nullptr
+        });
+    // No creature collision Cheat
+    cheats.push_back({
+        "No Creature Collision",
+        &noCreatureCollisionActive,
+        std::thread(),
+        [&]() { ToggleNoCreatureCollision(true); },
+        [&]() { ToggleNoCreatureCollision(false); },
+        nullptr
+        });
+    // No door collision Cheat
+    cheats.push_back({
+        "No Door Collision (Note: You need to reload the level before using)",
+        &noDoorCollisionActive,
+        std::thread(),
+        [&]() { ToggleNoDoorCollision(true); },
+        [&]() { ToggleNoDoorCollision(false); },
+        nullptr
+        });
+    cheats.push_back({
+        "Alternate Noclip (NOTE: ACTUALLY IMPLEMENT)",
+        &altNoclipActive,
+        std::thread(),
+        [&]() { ToggleAltNoclip(true); },
+        [&]() { ToggleAltNoclip(false); },
+        nullptr
+        });
     // Underwater Cheat
     cheats.push_back({
-        "Ignore Water (Make it walkable)",
+        "Ignore Water (Turn lara to a scuba diver on foot)",
         &underwaterActive,
         std::thread(),
         [&]() { ToggleUnderwater(true); },
@@ -511,7 +777,7 @@ void InitializeCheats() {
         });
     // Walk on slopes Cheat
     cheats.push_back({
-        "Walkable slopes (Note: Half assed. Fix)",
+        "Walkable slopes (Note: Works better with noclip)",
         &slopeActive,
         std::thread(),
         [&]() { ToggleSlopeCheat(true); },
