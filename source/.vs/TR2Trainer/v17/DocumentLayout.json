@@ -1,9 +1,9 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\mateu\\source\\repos\\TR2Trainer\\",
+  "WorkspaceRootPath": "C:\\Users\\mateu\\source\\repos\\TR2Trainer\\source\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{EC0AF512-5BF1-45DF-B555-1CD9207E3ECB}|TR2Trainer.vcxproj|C:\\Users\\mateu\\source\\repos\\TR2Trainer\\TR2Trainer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
+      "AbsoluteMoniker": "D:0:0:{EC0AF512-5BF1-45DF-B555-1CD9207E3ECB}|TR2Trainer.vcxproj|C:\\Users\\mateu\\source\\repos\\TR2Trainer\\source\\TR2Trainer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}",
       "RelativeMoniker": "D:0:0:{EC0AF512-5BF1-45DF-B555-1CD9207E3ECB}|TR2Trainer.vcxproj|solutionrelative:TR2Trainer.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
     },
     {
@@ -24,9 +24,9 @@
               "DocumentIndex": 1,
               "Title": "thread",
               "DocumentMoniker": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\include\\thread",
-              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\include\\thread",
+              "RelativeDocumentMoniker": "..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\include\\thread",
               "ToolTip": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\include\\thread",
-              "RelativeToolTip": "..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\include\\thread",
+              "RelativeToolTip": "..\\..\\..\\..\\..\\..\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.43.34808\\include\\thread",
               "ViewState": "AgIAAFQAAAAAAAAAAAAWwGEAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2025-05-27T18:35:38.623Z"
@@ -35,9 +35,9 @@
               "$type": "Document",
               "DocumentIndex": 0,
               "Title": "TR2Trainer.cpp",
-              "DocumentMoniker": "C:\\Users\\mateu\\source\\repos\\TR2Trainer\\TR2Trainer.cpp",
+              "DocumentMoniker": "C:\\Users\\mateu\\source\\repos\\TR2Trainer\\source\\TR2Trainer.cpp",
               "RelativeDocumentMoniker": "TR2Trainer.cpp",
-              "ToolTip": "C:\\Users\\mateu\\source\\repos\\TR2Trainer\\TR2Trainer.cpp",
+              "ToolTip": "C:\\Users\\mateu\\source\\repos\\TR2Trainer\\source\\TR2Trainer.cpp",
               "RelativeToolTip": "TR2Trainer.cpp",
               "ViewState": "AgIAABAFAAAAAAAAAAAqwBQFAAAlAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
