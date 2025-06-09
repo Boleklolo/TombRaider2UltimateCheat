@@ -1,53 +1,79 @@
-# Tomb Raider II Extreme Trainer by Boleklolo
+# 🗡️ Tomb Raider II Extreme Trainer by Boleklolo
 
-This trainer provides a variety of enhancements and modifications for your Tomb Raider II gameplay experience.
+Supercharge your **Tomb Raider II** experience with this feature-rich external trainer. Whether you want to explore without boundaries, gain a tactical edge, or just break the game for fun, this tool gives you total control over Lara's world.
 
-**Disclaimer:** This trainer is unfinished and might get updates if it gets enough popularity.
+> ⚠️ **DISCLAIMER:** This trainer is currently in development. Features may be incomplete or unstable. Future updates depend on user interest and feedback.
 
-## How to Use
+---
 
-1.  **Launch `Tomb2Cheat.exe`:** It is crucial that you launch the game using `Tomb2Cheat.exe` and **NOT** `Tomb2.exe`. This is necessary for certain cheats, particularly "instakill prevention" features, to function correctly.
-2.  **Run the Trainer:** Once `Tomb2Cheat.exe` is running, launch this trainer application.
-3.  **Attach to Process:** The trainer should automatically detect and attach to the `Tomb2Cheat.exe` process (as shown by "Attached to process" and a "Process ID"). If not, you might need to try launching the game first and then the trainer, or vice-versa.
-4.  **Enable Cheats:** Simply click on the checkboxes next to the desired cheats to enable or disable them.
+## 🚀 Getting Started
 
-## Features
+Follow these steps to get everything working correctly:
 
-### Movement Enhancements
+### 1. Launch the Correct Game Executable
+Always launch the game using `Tomb2Cheat.exe` — **NOT** `Tomb2.exe`. This custom executable enables core memory hooks used by the trainer, including advanced cheats like "instakill prevention."
 
-* **Noclip (No collision) (Doom style):** Allows you to pass through walls and objects. (Works well with slope fix)
-* **Ignore Water (Turn Lara to a scuba diver on foot):** Allows Lara to move as if she's underwater even on land.
-* **Walkable Slopes (Note: Works better with noclip):** Modifies slope physics to allow easier traversal.
-* **Slow Fall From Edges:** Reduces fall speed when falling from ledges.
-* **Unlimited Air Time:** Provides indefinite time underwater without drowning.
-* **No Animation Softlock (i.e. Swan Dive death):** Prevents Lara from getting stuck in animations that can lead to death.
-* **No Animation Stumbles:** Prevents Lara from stumbling animations.
+### 2. Run the Trainer
+After the game is running, launch the trainer application (`TombRaider2_Trainer.exe` or similar).
 
-### Collision Modifications
+### 3. Attach to Process
+The trainer should automatically detect and attach to the `Tomb2Cheat.exe` process. You’ll see confirmation messages like `Attached to process` and a displayed `Process ID`.
 
-* **No Static Object Collision:** Disables collision with static environmental objects.
-* **No Baddie Collision:** Disables collision with enemies.
-* **No Creature Collision:** Disables collision with creatures.
-* **No Door Collision (Note: You need to reload the level before using):** Disables collision with doors. Remember to reload the current level for this cheat to take effect.
+If it doesn't attach automatically:
+- Try launching the trainer before or after launching the game.
+- Ensure `Tomb2Cheat.exe` is running.
 
-### Special Actions
+### 4. Enable Cheats
+Use the intuitive checkbox interface to toggle cheats on and off in real time.
 
-* **Toggle Flipmap:** Toggles the "flipmap" effect (often used in map design to change level areas).
-* **Give All Keys/Puzzle Items:** Instantly grants all necessary keys and puzzle items for the current level.
-* **Give All Weapons:** Provides Lara with all weapons available in the game.
-* **Give Ammo & Flares:** Provides unlimited or a large quantity of ammunition and flares.
-* **Alternate Noclip (Includes walking in air):** An alternative noclip mode that also allows Lara to walk in the air.
+---
 
-### Health & Resources
+## 🎮 Features
 
-* **Unlimited Health:** Makes Lara invincible.
-* **Unlimited Flare Life:** Flares will burn indefinitely.
+### 🏃 Movement Enhancements
+- **Noclip (DOOM-style):** Move through walls and terrain freely. Best used with slope fixes.
+- **Ignore Water Physics:** Lara behaves like a scuba diver, even on land.
+- **Walkable Slopes:** Improves traversal over normally unwalkable slopes. Works best with noclip.
+- **Slow Fall From Edges:** Softens drops by reducing fall velocity from ledges.
+- **Unlimited Air Time:** Stay underwater indefinitely — no more drowning!
+- **No Animation Softlocks:** Prevents death or stuck states from buggy animations (e.g. swan dive deaths).
+- **No Animation Stumbles:** Disables animations that cause Lara to stumble or lose balance.
 
-## Troubleshooting
+### 🧱 Collision Modifications
+- **No Static Object Collision:** Walk through level geometry and props.
+- **No Baddie Collision:** Lara phases through human enemies.
+- **No Creature Collision:** Applies the same effect to animals and creatures.
+- **No Door Collision:** Disables collision for doors. ⚠️ **You must reload the level for this to take effect.**
 
-* If the trainer doesn't attach, ensure `Tomb2Cheat.exe` is running.
-* For "No Door Collision," remember to reload the level after enabling the cheat.
+### 🎯 Special Actions
+- **Toggle Flipmap:** Instantly trigger level flipmaps — great for debugging or chaos.
+- **Give All Keys & Puzzle Items:** Unlock every door or puzzle without effort.
+- **Give All Weapons:** Instantly equips all firearms and gear.
+- **Give Ammo & Flares:** Grants infinite or maxed-out ammunition and flares.
+- **Alternate Noclip (Air Walking):** An experimental version of noclip where Lara can walk mid-air.
 
-## Contribution
+### ❤️ Health & Resources
+- **Unlimited Health:** Makes Lara invulnerable to all damage.
+- **Unlimited Flare Duration:** Flares burn forever — no darkness, ever.
 
-If you find this trainer useful and want to see more updates, please consider showing your support to the developer, Boleklolo, to increase its popularity!
+---
+
+## 🛠️ Troubleshooting
+
+Having trouble? Here are a few common issues and fixes:
+
+- **Trainer won’t attach?**  
+  Make sure you launched the game via `Tomb2Cheat.exe` and not the original `Tomb2.exe`.
+
+- **No Door Collision doesn’t work?**  
+  Reload the level after enabling the cheat to apply memory changes.
+
+---
+
+## 💡 Contribution & Support
+
+If you find this trainer helpful, consider sharing it with others or leaving feedback! Popular demand will influence whether it receives updates, improvements, or even support for other classic Tomb Raider titles.
+
+---
+
+Created with love by **Boleklolo** 🛠️
