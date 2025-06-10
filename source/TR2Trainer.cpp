@@ -8,6 +8,8 @@
 // - Multithreaded cheat management
 // - GUI interface for cheat control
 
+// Why is it in one big file you may ask? Well I didnt expect it to be so big and im a psycho too idk
+
 #include "imgui.h"
 #include "imgui_impl_dx9.h"
 #include "imgui_impl_win32.h"
@@ -27,7 +29,7 @@
 // ====================================
 // Cheat Configuration Constants
 // ====================================
-
+void WriteOneShot(uintptr_t baseAddress, uintptr_t pointerOffset, uint16_t valueToWrite);
 // Process to attach to
 constexpr const wchar_t* processName = L"Tomb2Cheat.exe"; // Hardcoded because what fucked up fuck would fuck up the fucking name
 
@@ -37,12 +39,13 @@ const std::vector<short> brokenAnimIDs = { // Problematic animations
     155, // Swan dive death - "... *crack*"
     139, // Rolling ball death
     25 // Fall death - "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA *crack*"
-    }; // Add some more and try again with separating ebcause I know the thread issuea again
+    }; 
 const std::vector<short> stumbleAnimIDs = { // Problematic animations
     24, // Fall stumble
     31, // Jump stumble
     82 // Land
-}; // Add some more and try again with separating ebcause I know the thread issuea again
+
+}; 
 constexpr uintptr_t addressAnimationCheat = 0x001207BC; // Base address
 constexpr uintptr_t pointerOffsetAnimationCheat = 0x14; // Pointer offset
 
@@ -83,9 +86,9 @@ uint8_t opcodeairTimePatched3[6] = { 0x66, 0x81, 0x78, 0x20, 0xFF, 0x00 }; // JN
 constexpr uintptr_t slopePatchAddress1 = 0x0002B386; // Address to patch for slope walking
 constexpr uintptr_t slopePatchAddress2 = 0x0002B397; // Address to patch for slope walking
 uint8_t opcodeSlopeOriginal1[3] = { 0x83, 0xF8, 0x02 }; // Original bytes
-uint8_t opcodeSlopePatched1[3] = { 0x83, 0xF8, 0x09 }; // JE->JNE
+uint8_t opcodeSlopePatched1[3] = { 0x83, 0xF8, 0x19 }; // JE->JNE
 uint8_t opcodeSlopeOriginal2[3] = { 0x83, 0xF8, 0x02 }; // Original bytes
-uint8_t opcodeSlopePatched2[3] = { 0x83, 0xF8, 0x09 }; // JNG->JNL
+uint8_t opcodeSlopePatched2[3] = { 0x83, 0xF8, 0x19 }; // JNG->JNL
 
 // Slow Fall Cheat Configuration / AKA "Fall Softly Like a Feather" Cheat / AKA Coyote Time
 constexpr uintptr_t slowFallPatchAddress = 0x00028BF4; // Address to patch for slow fall
@@ -196,6 +199,30 @@ uint8_t opcodeDoorOpenerPatched7[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP i
 uint8_t opcodeDoorOpenerPatched8[5] = { 0x90, 0x90, 0x90, 0x90, 0x90 }; // NOP instructions for eighth door opener patch
 
 
+// Finish Level cheat
+constexpr uint16_t finishLevelNum = 1; // Health value to set
+constexpr uintptr_t baseAddressFinish = 0x00014634; // Base address
+constexpr uintptr_t pointerOffsetFinish = 0x04; // Pointer offset
+
+// Climb anything cheat
+uintptr_t climbAnythingAddress = 0x000151E3; // Address to patch for climb anything
+uintptr_t climbAnythingStateAddress = 0x000243E0; // Address to check climb state
+uintptr_t climbAnythingStateOffset = 0x06; // Offset for climb state pointer
+//Tomb2Cheat.exe+151E3 - 75 07                 - jne Tomb2Cheat.exe+151EC
+uint8_t opcodeClimbAnythingOriginal[2] = { 0x75, 0x07 }; // Original bytes
+uint8_t opcodeClimbAnythingPatched[2] = { 0x74, 0x07 }; // Jump over the check
+
+
+
+
+
+
+// MAKE THIS CHGEAT !!!!!! RAOFLLMAO
+//Tomb2Cheat.exe+30C41 - C1 F8 10              - sar eax,10 { 16 } - Running
+//Tomb2Cheat.exe+30C70 - C1 F8 10              - sar eax,10 { 16 } - Jump
+//Tomb2Cheat.exe+30C70 - B8 80000000           - mov eax,00000080 { 128 } - jump patched
+
+
 
 
 
@@ -225,6 +252,7 @@ static bool noBaddieCollisionPatched = false;
 static bool noCreatureCollisionPatched = false;
 static bool altNoclipCheatPatched = false; // Alternative noclip state
 static bool noDoorCollisionPatched = false; // Combined state for door collision
+static bool climbAnythingPatched = false;
 // Cheat Management
 struct Cheat {
     std::string name;
@@ -305,7 +333,7 @@ DWORD GetProcessIdByName(const wchar_t* name) {
         do {
             if (_wcsicmp(entry.szExeFile, name) == 0) {
                 pid = entry.th32ProcessID;
-                break;
+                break; // If youre reading this, hit me up on Discord (Boleklolo), idk why, just to tell me that somebody reads those comments/code
             }
         } while (Process32NextW(snapshot, &entry));
     }
@@ -531,6 +559,8 @@ void ToggleUnderwater(bool enable) {
             airTimeCheatPatched = false;
         }
     }
+
+
 /**
  * Toggles slope movement cheat
  * @param enable Whether to enable
@@ -563,6 +593,21 @@ void ToggleStatic(bool enable) {
         WriteProcessMemory(processHandle, (LPVOID)(moduleBase + noStaticCheatAddress),
             opcodeNoStaticCollisionOriginal, sizeof(opcodeNoStaticCollisionOriginal), nullptr);
         noStaticCollisionPatched = false;
+    }
+}
+void ToggleClimbAnything(bool enable) {
+    if (!processAttached) return;
+    if (enable && !climbAnythingPatched) {
+        WriteProcessMemory(processHandle, (LPVOID)(moduleBase + climbAnythingAddress),
+            opcodeClimbAnythingPatched, sizeof(opcodeClimbAnythingPatched), nullptr);
+        climbAnythingPatched = true;
+        WriteOneShot(climbAnythingStateAddress, climbAnythingStateOffset, 1); // Set climb state to enabled
+    }
+    else if (!enable && climbAnythingPatched) {
+        WriteProcessMemory(processHandle, (LPVOID)(moduleBase + climbAnythingAddress),
+            opcodeClimbAnythingOriginal, sizeof(opcodeClimbAnythingOriginal), nullptr);
+        climbAnythingPatched = false;
+        WriteOneShot(climbAnythingStateAddress, climbAnythingStateOffset, 0); // Set climb state to disabled
     }
 }
 /**
@@ -681,7 +726,7 @@ void GiveAllWeapons() {
 }
 
 void GiveAmmo() {
-    int itemIDs[] = { 143, 144, 145, 146, 147, 148, 151 };
+    int itemIDs[] = { 143, 144, 145, 146, 147, 148, 151, 149, 150 };
     for (int id : itemIDs) {
         for (int i = 0; i < 15; i++)
         {
@@ -690,6 +735,9 @@ void GiveAmmo() {
         
     }
 }
+
+
+
 /**
  * Worker thread for animation fix cheat
  * @param active Atomic flag to control execution
@@ -713,7 +761,7 @@ void AnimationFixThread(std::atomic<bool>& active) {
     }
 }
 
-void AnimationStubmleFixThread(std::atomic<bool>& active) {
+void AnimationStubmleFixThread(std::atomic<bool>& active) { // Typo im too lazy to fix so Im writing a comment that takes longer to write than to fix it :)
     uintptr_t animAddress = 0;
     if (!ReadPointerChain(processHandle, moduleBase + addressAnimationCheat,
         { pointerOffsetAnimationCheat }, animAddress)) {
@@ -732,6 +780,23 @@ void AnimationStubmleFixThread(std::atomic<bool>& active) {
     }
 }
 
+
+
+void WriteOneShot(uintptr_t baseAddress, uintptr_t pointerOffset, uint16_t valueToWrite) {
+    uintptr_t targetAddress = 0;
+
+    // Resolve pointer chain
+    if (!ReadPointerChain(processHandle, moduleBase + baseAddress,
+        { pointerOffset }, targetAddress)) {
+        std::cerr << "Failed to resolve pointer chain!" << std::endl;
+        return;
+    }
+    // Perform write
+    if (!WriteProcessMemory(processHandle, (LPVOID)targetAddress,
+        &valueToWrite, sizeof(valueToWrite), nullptr)) {
+        std::cerr << "Failed to write to memory!" << std::endl;
+    }
+}
 void FlareCheatThread(std::atomic<bool>& active) {
     uintptr_t flareAddress = 0;
     if (!ReadPointerChain(processHandle, moduleBase + flareCheatAddress,
@@ -789,6 +854,7 @@ void InitializeCheats() {
     static bool slowFallActive = false;
     static bool unlimitedAirActive = false; // Unlimited air cheat
     static bool staticActive = false; // No static collision cheat
+    static bool climbActive = false;
     static bool noBaddieCollisionActive = false; // No baddie collision cheat
     static bool noCreatureCollisionActive = false; // No creature collision cheat
     static bool noDoorCollisionActive = false; // No door collision cheat
@@ -797,6 +863,8 @@ void InitializeCheats() {
     static bool addItemsFunctionActive = false;
     static bool addWeaponsFunctionActive = false;
     static bool addAmmoFunctionActive = false;
+    static bool finishLevelActive = false;
+
     static std::atomic<bool> flareCheatActiveAtomic{ false };
     static std::atomic<bool> animationFixActiveAtomic{ false };
     static std::atomic<bool> animationStumbleFixActiveAtomic{ false };
@@ -821,7 +889,15 @@ void InitializeCheats() {
         },
         nullptr
         });
-
+    // Finish Level
+    cheats.push_back({
+        "Finish Level",
+        &finishLevelActive,
+        std::thread(),
+        [&]() { WriteOneShot(baseAddressFinish, pointerOffsetFinish, 1); },
+        []() {}, // No disable action needed
+        nullptr
+        });
     cheats.push_back({
     "No Animation Stumbles",
     &animationStumbleFixActive,
@@ -863,7 +939,7 @@ void InitializeCheats() {
     nullptr
             });
     cheats.push_back({
-"Give Ammo & Flares",
+"Give Ammo, Meds & Flares",
 &addAmmoFunctionActive,
 std::thread(),
 [&]() { GiveAmmo(); },
@@ -912,6 +988,15 @@ nullptr
         std::thread(),
         [&]() { ToggleStatic(true); },
         [&]() { ToggleStatic(false); },
+        nullptr
+        });
+    // Climb
+    cheats.push_back({
+        "Climb Anywhere",
+        &climbActive,
+        std::thread(),
+        [&]() { ToggleClimbAnything(true); },
+        [&]() { ToggleClimbAnything(false); },
         nullptr
         });
     // No baddie collision Cheat
@@ -1293,6 +1378,16 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     }
                 }
 
+                // Climb
+                if (auto* climb = FindCheatByName("Climb Anywhere")) {
+                    bool active = *climb->active;
+                    if (ImGui::Checkbox(climb->name.c_str(), &active)) {
+                        if (active && climb->enableFunction) climb->enableFunction();
+                        else if (!active && climb->disableFunction) climb->disableFunction();
+                        *climb->active = active;
+                    }
+                }
+
                 // Slope Walking
                 if (auto* slope = FindCheatByName("Walkable slopes (Note: Works better with noclip)")) {
                     bool active = *slope->active;
@@ -1321,6 +1416,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                         *air->active = air;
                     }
                 }
+                    // Inifnite oxygen
+                    if (auto* ox = FindCheatByName("Unlimited Air")) {
+                        bool active = *ox->active;
+                        if (ImGui::Checkbox(ox->name.c_str(), &active)) {
+                            if (active && ox->enableFunction) ox->enableFunction();
+                            else if (!active && ox->disableFunction) ox->disableFunction();
+                            *ox->active = ox;
+                        }
+                    }
                 // Softlock fix
                 if (auto* animSoft = FindCheatByName("No Animation Softlock (i.e. Swan Dive death)")) {
                     bool active = *animSoft->active;
@@ -1405,9 +1509,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                     }
                 }
                 // Give amo (sex)
-                if (auto* ammo = FindCheatByName("Give Ammo & Flares")) {
+                if (auto* ammo = FindCheatByName("Give Ammo, Meds & Flares")) {
                     if (ImGui::Button(ammo->name.c_str())) {
                         if (ammo->enableFunction) ammo->enableFunction();
+                    }
+                }
+                // Finish Level
+                if (auto* finish = FindCheatByName("Finish Level")) {
+                    if (ImGui::Button(finish->name.c_str())) {
+                        if (finish->enableFunction) finish->enableFunction();
                     }
                 }
                 // Alternate Noclip
@@ -1444,6 +1554,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 }
             }
         }
+        // Draw an input field for integers
+        static int myValue = 0; // This stores the number the user inputs
+        ImGui::InputInt("Enter a number", &myValue);
+        ImGui::Text("Value box for later noob");
         ImGui::End();
 
         // Rendering
