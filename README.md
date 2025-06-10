@@ -1,3 +1,8 @@
+![Built with Brainpower](https://img.shields.io/badge/Built%20with-Brainpower-red)
+![Made with C++](https://img.shields.io/badge/Made_with-C++-blue)
+![Trainer for Tomb Raider 2](https://img.shields.io/badge/Trainer_for-Tomb_Raider_2-green)
+
+
 # 🗡️ Tomb Raider II Extreme Trainer by Boleklolo
 
 Supercharge your **Tomb Raider II** experience with this feature-rich external trainer. Whether you want to explore without boundaries, gain a tactical edge, or just break the game for fun, this tool gives you total control over Lara's world.
