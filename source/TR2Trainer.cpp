@@ -218,17 +218,20 @@ uint8_t opcodeClimbAnythingPatched[2] = { 0x74, 0x07 }; // Jump over the check
 
 
 // MAKE THIS CHGEAT !!!!!! RAOFLLMAO
-//Tomb2Cheat.exe+30C41 - C1 F8 10              - sar eax,10 { 16 } - Running
+//Tomb2Cheat.exe+30C41 - C1 F8 0F              - sar eax,0F { 15 } - Run
 //Tomb2Cheat.exe+30C70 - C1 F8 10              - sar eax,10 { 16 } - Jump
 //Tomb2Cheat.exe+30C70 - B8 80000000           - mov eax,00000080 { 128 } - jump patched
 
+// Tomb2Cheat.exe+423A4 - 7E/D 02                 - jle Tomb2Cheat.exe+423A8 trapdoor floor
+// Tomb2Cheat.exe+423E4 - 7D/E 07                 - jnl Tomb2Cheat.exe+423ED trapdoor ceiling
+
+//Patched/Unpactched
 
 
-
-
-
-
-
+//DOZY FINALLY
+// Tomb2Cheat.exe+32604 - 74 55                 - je Tomb2Cheat.exe+3265B - Water check to let you glide to other rooms
+// Tomb2Cheat.exe+3076A - 0F85 25010000         - jne Tomb2Cheat.exe+30895 - Do not reset back to above water
+// Tomb2Cheat.exe+3076A - 0F84 25010000         - je Tomb2Cheat.exe+30895 - above but patched
 
 // ====================================
 // Global State Variables
