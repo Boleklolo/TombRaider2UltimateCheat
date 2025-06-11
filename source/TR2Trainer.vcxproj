@@ -92,7 +92,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\mateu\source\repos\TR2Trainer\source\imgui</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\mateu\source\repos\TR2Trainer\source\Scriptage;C:\Users\mateu\source\repos\TR2Trainer\source\imgui</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>

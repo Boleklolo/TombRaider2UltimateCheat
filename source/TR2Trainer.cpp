@@ -213,14 +213,59 @@ uint8_t opcodeClimbAnythingOriginal[2] = { 0x75, 0x07 }; // Original bytes
 uint8_t opcodeClimbAnythingPatched[2] = { 0x74, 0x07 }; // Jump over the check
 
 
+// Running sonic fast roflllmao
+uintptr_t fastRunAddress = 0x00030C41; // Address to patch for fast run
+uint8_t opcodefastRunOriginal[3] = { 0xC1, 0xF8, 0x10 }; // Original bytes
+uint8_t opcodefastRunPatched[3] = { 0xC1, 0xF8, 0x0F }; // Patched bytes
+
+// Fast jump cheat
+uintptr_t fastJumpAddress = 0x00030C70; // Address to patch for fast jump
+uint8_t opcodefastJumpOriginal[5] = { 0xC1, 0xF8, 0x10, 0x03, 0xC1 }; // Original bytes <- idk why i keep it if its gonna crash the game rofllmao
+// Why am I saying rofflmao so much its bad
+uint8_t opcodefastJumpPatched[5] = { 0xB8, 0x80, 0x00, 0x00, 0x00 }; // Original bytes
+
+// Trapdoor cheat
+uintptr_t trapdoorAddress1 = 0x000423A4; // Address to patch for trapdoor
+uintptr_t trapdoorAddress2 = 0x000423E4; // Address to patch for trapdoor
+uint8_t trapdoor1Original[2] = { 0x7D, 0x02 }; // Original bytes
+uint8_t trapdoor1Patched[2] = { 0x7E, 0x02}; // Original bytes
+uint8_t trapdoor2Original[2] = { 0x7E, 0x07 }; // Original bytes
+uint8_t trapdoor2Patched[2] = { 0x7D, 0x07 }; // Original bytes
 
 
+// Dozy cheat
+uintptr_t dozyAddress1 = 0x00032604; // Address to patch for dozy - portal bypass
+uintptr_t dozyAddress2 = 0x0003076A; // Address to patch for dozy - no reset
+uint8_t dozyCheat1Original[2] = { 0x74, 0x55 }; // Original bytes for portal bypass
+uint8_t dozyCheat1Patched[2] = { 0x75, 0x55 }; // Original bytes for portal bypass
+uint8_t dozyCheat2Original[6] = { 0x0F, 0x85, 0x25, 0x01, 0x00, 0x00 }; // Original bytes for no reset
+uint8_t dozyCheat2Patched[6] = { 0x0F, 0x84, 0x25, 0x01, 0x00, 0x00 }; // Patched bytes for no reset
 
 
+uintptr_t gravityAddress = 0x001207BC;
+uintptr_t gravityPointer = 0x46;
+
+uintptr_t fallspeedAddress = 0x001207BC;
+uintptr_t fallspeedPointer = 0x20;
+
+uintptr_t animStateAddress = 0x001207BC;
+uintptr_t animStatePointer = 0x10;
+
+uintptr_t animationAddress = 0x001207BC;
+uintptr_t animationPointer = 0x14;
+// At this point I realized that I copied laras object base address like 20 times, too late to turn back now ig
+uintptr_t waterStateAddress = 0x000243E0;
+uintptr_t waterStatePointer = 0x04;
+
+uint16_t DOZYgravity = 0;
+uint16_t DOZYfallspeed = 0;
+uint16_t DOZYanimState[2] = { 17, 2 }; //Magic numbers only I understand (haha)
+uint16_t DOZYanimation[2] = { 87, 0 };
+uint16_t DOZYwaterState[2] = { 1, 0 };
 // MAKE THIS CHGEAT !!!!!! RAOFLLMAO
-//Tomb2Cheat.exe+30C41 - C1 F8 0F              - sar eax,0F { 15 } - Run
-//Tomb2Cheat.exe+30C70 - C1 F8 10              - sar eax,10 { 16 } - Jump
-//Tomb2Cheat.exe+30C70 - B8 80000000           - mov eax,00000080 { 128 } - jump patched
+//Tomb2Cheat.exe+ -                 - sar eax,0F { 15 } - Run
+//Tomb2Cheat.exe+ -                 - sar eax,10 { 16 } - Jump
+//Tomb2Cheat.exe+30C70 -  000000           - mov eax,00000080 { 128 } - jump patched
 
 // Tomb2Cheat.exe+423A4 - 7E/D 02                 - jle Tomb2Cheat.exe+423A8 trapdoor floor
 // Tomb2Cheat.exe+423E4 - 7D/E 07                 - jnl Tomb2Cheat.exe+423ED trapdoor ceiling
@@ -236,6 +281,7 @@ uint8_t opcodeClimbAnythingPatched[2] = { 0x74, 0x07 }; // Jump over the check
 // ====================================
 // Global State Variables
 // ====================================
+
 
 // Process Handling
 static DWORD processId = 0;
@@ -256,6 +302,10 @@ static bool noCreatureCollisionPatched = false;
 static bool altNoclipCheatPatched = false; // Alternative noclip state
 static bool noDoorCollisionPatched = false; // Combined state for door collision
 static bool climbAnythingPatched = false;
+static bool fastRunPatched = false; // Fast run state
+static bool fastJumpPatched = false; // Fast jump state
+static bool trapdoorPatched = false; // Trapdoor state
+static bool dozyPatched = false; // Dozy state
 // Cheat Management
 struct Cheat {
     std::string name;
@@ -267,8 +317,9 @@ struct Cheat {
 };
 std::vector<Cheat> cheats;
 bool showCheatWindow = true;
-
-
+static std::atomic<bool> levelCompleteWatcherActive{ false };
+static std::thread levelCompleteWatcherThread;
+void LevelCompleteWatcherThread(std::atomic<bool>& active);
 // Ignore this shitty shit
 void DetachFromProcess(); // Forward declaration
 DWORD GetProcessIdByName(const wchar_t* name); // Forward declaration
@@ -295,6 +346,8 @@ bool AttachToProcess() {
     }
 
     processAttached = true;
+    levelCompleteWatcherActive = true;
+    levelCompleteWatcherThread = std::thread(LevelCompleteWatcherThread, std::ref(levelCompleteWatcherActive));
     return true;
 }
 
@@ -310,7 +363,10 @@ void DetachFromProcess() {
             if (cheat.thread.joinable()) cheat.thread.join();
         }
     }
-
+    levelCompleteWatcherActive = false;
+    if (levelCompleteWatcherThread.joinable()) {
+        levelCompleteWatcherThread.join();
+    }
     if (processHandle) {
         CloseHandle(processHandle);
         processHandle = nullptr;
@@ -414,7 +470,42 @@ void ToggleNoclip(bool enable) {
         }
     }
 }
+void ToggleFastRun(bool enable) {
+    if (!processAttached) return;
 
+    if (enable) {
+        if (!fastRunPatched) {
+            WriteProcessMemory(processHandle, (LPVOID)(moduleBase + fastRunAddress),
+                opcodefastRunPatched, sizeof(opcodefastRunPatched), nullptr);
+            fastRunPatched = true;
+        }
+    }
+    else {
+        if (fastRunPatched) {
+            WriteProcessMemory(processHandle, (LPVOID)(moduleBase + fastRunAddress),
+                opcodefastRunOriginal, sizeof(opcodefastRunOriginal), nullptr);
+            fastRunPatched = false;
+        }
+    }
+}
+void ToggleFastJump(bool enable) {
+    if (!processAttached) return;
+
+    if (enable) {
+        if (!fastJumpPatched) {
+            WriteProcessMemory(processHandle, (LPVOID)(moduleBase + fastJumpAddress),
+                opcodefastJumpPatched, sizeof(opcodefastJumpPatched), nullptr);
+            fastJumpPatched = true;
+        }
+    }
+    else {
+        if (fastJumpPatched) {
+            WriteProcessMemory(processHandle, (LPVOID)(moduleBase + fastJumpAddress),
+                opcodefastJumpOriginal, sizeof(opcodefastJumpOriginal), nullptr);
+            fastJumpPatched = false;
+        }
+    }
+}
 /**
  * Toggles slow fall by patching game code
  * @param enable Whether to enable or disable
@@ -679,6 +770,65 @@ void ToggleNoDoorCollision(bool enable) {
         noDoorCollisionPatched = false;
     }
 }
+
+
+Patch trapdoorPatches[] = {
+    { trapdoorAddress1, trapdoor1Patched, sizeof(trapdoor1Patched), trapdoor1Original },
+    { trapdoorAddress2, trapdoor2Patched, sizeof(trapdoor2Patched), trapdoor2Original }
+};
+
+void ToggleNoTrapdoorCollision(bool enable) {
+    if (!processAttached) return;
+    if (enable && !trapdoorPatched) {
+        ToggleMultiPatch(true, trapdoorPatches, sizeof(trapdoorPatches) / sizeof(Patch));
+        trapdoorPatched = true;
+    }
+    else if (!enable && trapdoorPatched) {
+        ToggleMultiPatch(false, trapdoorPatches, sizeof(trapdoorPatches) / sizeof(Patch));
+        trapdoorPatched = false;
+    }
+}
+
+
+
+
+
+
+//DOZY
+Patch dozyPatches[] = {
+    { dozyAddress1, dozyCheat1Patched, sizeof(dozyCheat1Patched), dozyCheat1Patched },
+    { dozyAddress2, dozyCheat2Patched, sizeof(dozyCheat2Patched), dozyCheat2Patched }
+};
+
+void ToggleDozy(bool enable) {
+    if (!processAttached) return;
+    if (enable && !dozyPatched) {
+        ToggleMultiPatch(true, dozyPatches, sizeof(dozyPatches) / sizeof(Patch));
+        dozyPatched = true;
+
+        // Now set all addresses to said values, index 0 for active and index 1 for inactive, why is it here and not above? idk
+        WriteOneShot(gravityAddress, gravityPointer, DOZYgravity);
+        WriteOneShot(fallspeedAddress, fallspeedPointer, DOZYfallspeed);
+        WriteOneShot(animStateAddress, animStatePointer, DOZYanimState[0]);
+        WriteOneShot(animationAddress, animationPointer, DOZYanimation[0]);
+        WriteOneShot(waterStateAddress, waterStatePointer, DOZYwaterState[0]);
+    }
+    else if (!enable && dozyPatched) {
+        ToggleMultiPatch(false, dozyPatches, sizeof(dozyPatches) / sizeof(Patch));
+        dozyPatched = false;
+        WriteOneShot(gravityAddress, gravityPointer, DOZYgravity);
+        WriteOneShot(fallspeedAddress, fallspeedPointer, DOZYfallspeed);
+        WriteOneShot(animStateAddress, animStatePointer, DOZYanimState[1]);
+        WriteOneShot(animationAddress, animationPointer, DOZYanimation[1]);
+        WriteOneShot(waterStateAddress, waterStatePointer, DOZYwaterState[1]);
+    }
+}
+
+
+
+
+
+
 void ToggleFlipmapFunction(bool enable) {
     if (!processAttached || !enable) return;
 
@@ -858,6 +1008,11 @@ void InitializeCheats() {
     static bool unlimitedAirActive = false; // Unlimited air cheat
     static bool staticActive = false; // No static collision cheat
     static bool climbActive = false;
+    static bool dozyActive = false; // Dozy cheat
+    static bool fastRunActive = false; // Fast run cheat
+    static bool fastJumpActive = false; // Fast jump cheat
+    static bool trapdoorActive = false; // Trapdoor cheat
+
     static bool noBaddieCollisionActive = false; // No baddie collision cheat
     static bool noCreatureCollisionActive = false; // No creature collision cheat
     static bool noDoorCollisionActive = false; // No door collision cheat
@@ -892,6 +1047,7 @@ void InitializeCheats() {
         },
         nullptr
         });
+
     // Finish Level
     cheats.push_back({
         "Finish Level",
@@ -975,6 +1131,22 @@ nullptr
         [&]() { ToggleNoclip(false); },
         nullptr
         });
+    cheats.push_back({
+    "No Trapdoor Collision",
+    &trapdoorActive,
+    std::thread(),
+    [&]() { ToggleNoTrapdoorCollision(true); },
+    [&]() { ToggleNoTrapdoorCollision(false); },
+    nullptr
+        });
+    cheats.push_back({
+    "Fly (Warning: Stand still before using. Also it may break lara's rotation a bit, turn it off when lara faces towards the front.)",
+    &dozyActive,
+    std::thread(),
+    [&]() { ToggleDozy(true); },
+    [&]() { ToggleDozy(false); },
+    nullptr
+        });
     // No fall thingy
     cheats.push_back({
         "Unlimited Air Time",
@@ -1001,6 +1173,22 @@ nullptr
         [&]() { ToggleClimbAnything(true); },
         [&]() { ToggleClimbAnything(false); },
         nullptr
+        });
+    cheats.push_back({
+    "Fast running",
+    &fastRunActive,
+    std::thread(),
+    [&]() { ToggleFastRun(true); },
+    [&]() { ToggleFastRun(false); },
+    nullptr
+        });
+    cheats.push_back({
+"Fast jump",
+&fastJumpActive,
+std::thread(),
+[&]() { ToggleFastJump(true); },
+[&]() { ToggleFastJump(false); },
+nullptr
         });
     // No baddie collision Cheat
     cheats.push_back({
@@ -1216,12 +1404,15 @@ LRESULT WINAPI WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     }
     return ::DefWindowProcW(hWnd, msg, wParam, lParam);
 }
+
 Cheat* FindCheatByName(const std::string& name) {
     for (auto& cheat : cheats) {
         if (cheat.name == name) return &cheat;
     }
     return nullptr;
 }
+
+
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
@@ -1351,6 +1542,11 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         ImGui::TextColored(ImVec4(1, 0, 0, 1), "Disclaimer: This trainer is unfinished");
         ImGui::TextColored(ImVec4(1, 0, 0, 1), "and might get updates if it gets enough popularity");
         ImGui::Separator();
+        ImGui::TextColored(ImVec4(0, 0, 1, 1), "Warning: Cheats like health, air or animations");
+        ImGui::TextColored(ImVec4(0, 0, 1, 1), "have to be reapplied when loading a different level's save");
+
+
+        ImGui::Separator();
         if (processAttached) {
             ImGui::TextColored(ImVec4(0, 1, 0, 1), "Attached to process");
             ImGui::Text("Process ID: %lu", processId);
@@ -1400,7 +1596,33 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                         *slope->active = active;
                     }
                 }
-
+                // Slope Walking
+                if (auto* fly = FindCheatByName("Fly (Warning: Stand still before using. Also it may break lara's rotation a bit, turn it off when lara faces towards the front.)")) {
+                    bool active = *fly->active;
+                    if (ImGui::Checkbox(fly->name.c_str(), &active)) {
+                        if (active && fly->enableFunction) fly->enableFunction();
+                        else if (!active && fly->disableFunction) fly->disableFunction();
+                        *fly->active = active;
+                    }
+                }
+                // Slope Walking
+                if (auto* run = FindCheatByName("Fast running")) {
+                    bool active = *run->active;
+                    if (ImGui::Checkbox(run->name.c_str(), &active)) {
+                        if (active && run->enableFunction) run->enableFunction();
+                        else if (!active && run->disableFunction) run->disableFunction();
+                        *run->active = active;
+                    }
+                }
+                // Slope Walking
+                if (auto* jump = FindCheatByName("Fast jump")) {
+                    bool active = *jump->active;
+                    if (ImGui::Checkbox(jump->name.c_str(), &active)) {
+                        if (active && jump->enableFunction) jump->enableFunction();
+                        else if (!active && jump->disableFunction) jump->disableFunction();
+                        *jump->active = active;
+                    }
+                }
                 // Slow Fall
                 if (auto* slowFall = FindCheatByName("Slow Fall From Edges")) {
                     bool active = *slowFall->active;
@@ -1481,6 +1703,15 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 }
 
                 // No Door Collision
+                if (auto* trapdoor = FindCheatByName("No Trapdoor Collision")) {
+                    bool active = *trapdoor->active;
+                    if (ImGui::Checkbox(trapdoor->name.c_str(), &active)) {
+                        if (active && trapdoor->enableFunction) trapdoor->enableFunction();
+                        else if (!active && trapdoor->disableFunction) trapdoor->disableFunction();
+                        *trapdoor->active = active;
+                    }
+                }
+                // No Door Collision
                 if (auto* door = FindCheatByName("No Door Collision (Note: You need to reload the level before using)")) {
                     bool active = *door->active;
                     if (ImGui::Checkbox(door->name.c_str(), &active)) {
@@ -1557,10 +1788,10 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 }
             }
         }
-        // Draw an input field for integers
-        static int myValue = 0; // This stores the number the user inputs
-        ImGui::InputInt("Enter a number", &myValue);
-        ImGui::Text("Value box for later noob");
+        //// Draw an input field for integers
+        //static int myValue = 0; // This stores the number the user inputs
+        //ImGui::InputInt("Enter a number", &myValue);
+        //ImGui::Text("Value box for later noob");
         ImGui::End();
 
         // Rendering
@@ -1596,4 +1827,64 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     ::UnregisterClassW(wc.lpszClassName, wc.hInstance);
 
     return 0;
+}
+// Implement the watcher thread function
+void LevelCompleteWatcherThread(std::atomic<bool>& active) {
+    while (active) {
+        if (processAttached) {
+            uintptr_t flagAddress = 0;
+            if (ReadPointerChain(processHandle, moduleBase + baseAddressFinish,
+                { pointerOffsetFinish }, flagAddress)) {
+                uint16_t flagValue = 0;
+                if (ReadProcessMemory(processHandle, (LPCVOID)flagAddress,
+                    &flagValue, sizeof(flagValue), nullptr)) {
+                    if (flagValue == 1) {
+                        // Level complete detected - disable cheats
+                        std::vector<std::string> cheatNames = {
+                            "Climb Anywhere",
+                            "Fly (Warning: Stand still before using. Also it may break lara's rotation a bit, turn it off when lara faces towards the front.)",
+                            "Unlimited Air",
+                            "No Animation Softlock (i.e. Swan Dive death)",
+                            "No Animation Stumbles",
+                            "Unlimited Health",
+                            "Unlimited Flare Life"
+                        };
+
+                        // Record current state and disable cheats
+                        std::vector<bool> wereActive;
+                        for (const auto& name : cheatNames) {
+                            Cheat* cheat = FindCheatByName(name);
+                            if (cheat) {
+                                wereActive.push_back(*(cheat->active));
+                                if (*(cheat->active) && cheat->disableFunction) {
+                                    cheat->disableFunction();
+                                }
+                            }
+                        }
+
+                        // Wait for flag to reset to 0
+                        while (active && processAttached) {
+                            uint16_t newFlagValue = 0;
+                            if (ReadProcessMemory(processHandle, (LPCVOID)flagAddress,
+                                &newFlagValue, sizeof(newFlagValue), nullptr)){
+                                if (newFlagValue == 0) break;
+                            }
+                            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+                        }
+
+                        // Re-enable cheats that were active
+                        for (size_t i = 0; i < cheatNames.size(); i++) {
+                            if (wereActive[i]) {
+                                Cheat* cheat = FindCheatByName(cheatNames[i]);
+                                if (cheat && cheat->enableFunction) {
+                                    cheat->enableFunction();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    }
 }

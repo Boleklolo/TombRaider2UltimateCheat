@@ -1,6 +1,7 @@
 ﻿  TR2Trainer.cpp
   Generating code
-  Previous IPDB and IOBJ mismatch, fall back to full compilation.
-  All 2804 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  306 of 2952 functions (10.4%) were compiled, the rest were copied from previous compilation.
+    0 functions were new in current compilation
+    160 functions had inline decision re-evaluated but remain unchanged
   Finished generating code
   TR2Trainer.vcxproj -> C:\Users\mateu\source\repos\TR2Trainer\source\Release\TR2Trainer.exe

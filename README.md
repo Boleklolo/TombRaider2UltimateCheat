@@ -2,83 +2,166 @@
 ![Made with C++](https://img.shields.io/badge/Made_with-C++-blue)
 ![Trainer for Tomb Raider 2](https://img.shields.io/badge/Trainer_for-Tomb_Raider_2-green)
 
+# 🗡️ Tomb Raider II: Extreme Trainer  
+### *"Unshackle Lara. Break the rules. Witness chaos."*  
+Made with care and caffeine by **Boleklolo**
 
-# 🗡️ Tomb Raider II Extreme Trainer by Boleklolo
+---
 
-Supercharge your **Tomb Raider II** experience with this feature-rich external trainer. Whether you want to explore without boundaries, gain a tactical edge, or just break the game for fun, this tool gives you total control over Lara's world.
+> ⚠️ **DISCLAIMER**:  
+> This trainer is **unfinished**, experimental, and a bit of a chaotic masterpiece. Some features might not work on all levels. Some might explode (figuratively). Updates will depend on popularity and user feedback.
 
-> ⚠️ **DISCLAIMER:** This trainer is currently in development. Features may be incomplete or unstable. Future updates depend on user interest and feedback.
+> 🔥 **NOTE**: Cheats like **health**, **air**, or **animations** must be re-enabled if you load a different level's save. The game just loves resetting memory.
+
+---
+
+## 📜 Table of Contents
+
+- [Getting Started](#-getting-started)
+- [Cheat Categories](#-cheat-categories)
+  - [Movement Enhancements](#-movement-enhancements)
+  - [Collision Modifications](#-collision-modifications)
+  - [Special Actions](#-special-actions)
+  - [Health & Resources](#-health--resources)
+- [Troubleshooting](#-troubleshooting)
+- [Dev Diary](#-dev-diary)
+- [Trainer Lore](#-trainer-lore)
+- [Credits & Support](#-credits--support)
 
 ---
 
 ## 🚀 Getting Started
 
-Follow these steps to get everything working correctly:
+### ✅ Launch Sequence
 
-### 1. Launch the Correct Game Executable
-Always launch the game using `Tomb2Cheat.exe` — **NOT** `Tomb2.exe`. This custom executable enables core memory hooks used by the trainer, including advanced cheats like "instakill prevention."
+1. **Start with `Tomb2Cheat.exe`**  
+   Not `Tomb2.exe`. This custom build lets the trainer hook memory, change physics, and bend reality.
 
-### 2. Run the Trainer
-After the game is running, launch the trainer application (`TombRaider2_Trainer.exe` or similar).
+2. **Open `TombRaider2_Trainer.exe`**  
+   Run the trainer after the game. A successful attach will show:
+''Attached to process
+Process ID: [number]
+Module Base: 0x00400000''
 
-### 3. Attach to Process
-The trainer should automatically detect and attach to the `Tomb2Cheat.exe` process. You’ll see confirmation messages like `Attached to process` and a displayed `Process ID`.
 
-If it doesn't attach automatically:
-- Try launching the trainer before or after launching the game.
-- Ensure `Tomb2Cheat.exe` is running.
-
-### 4. Enable Cheats
-Use the intuitive checkbox interface to toggle cheats on and off in real time.
+3. **Enable Cheats**  
+Use the GUI's checkboxes to toggle real-time cheats. No restarting needed (except doors sometimes 👀).
 
 ---
 
-## 🎮 Features
+## 🧰 Cheat Categories
+
+---
 
 ### 🏃 Movement Enhancements
-- **Noclip (DOOM-style):** Move through walls and terrain freely. Best used with slope fixes.
-- **Ignore Water Physics:** Lara behaves like a scuba diver, even on land.
-- **Walkable Slopes:** Improves traversal over normally unwalkable slopes. Works best with noclip.
-- **Slow Fall From Edges:** Softens drops by reducing fall velocity from ledges.
-- **Unlimited Air Time:** Stay underwater indefinitely — no more drowning!
-- **No Animation Softlocks:** Prevents death or stuck states from buggy animations (e.g. swan dive deaths).
-- **No Animation Stumbles:** Disables animations that cause Lara to stumble or lose balance.
+
+| Cheat | Description |
+|-------|-------------|
+| ✅ Noclip | (DOOM-style) Walk through walls. Ideal with slope fix. |
+| ✅ Ignore Water | Lara swims on land. Full flipper mode. |
+| ✅ Climb Anywhere | Surfaces? Optional. Go wild. |
+| ✅ Walkable Slopes | Makes steep slopes walkable. Pair with noclip. |
+| ✅ Fly | Stand still before activating. May break Lara’s neck (rotation-wise). |
+| ✅ Fast Running | Gotta go fast. |
+| ✅ Fast Jump | Jump higher/faster. Lara's legs become springs. |
+| ✅ Slow Fall From Edges | Great for speedruns or breaking physics. |
+| ✅ Unlimited Air | Breathe underwater. Forever. Poseidon vibes. |
+| ✅ No Animation Softlock | Fixes swan dive deaths and weird stunlocks. |
+| ✅ No Animation Stumbles | Walk with confidence. No tripping! |
+
+---
 
 ### 🧱 Collision Modifications
-- **No Static Object Collision:** Walk through level geometry and props.
-- **No Baddie Collision:** Lara phases through human enemies.
-- **No Creature Collision:** Applies the same effect to animals and creatures.
-- **No Door Collision:** Disables collision for doors. ⚠️ **You must reload the level for this to take effect.**
+
+| Cheat | Description |
+|-------|-------------|
+| ✅ No Static Object Collision | Walk through walls, decor, and more. |
+| ✅ No Baddie Collision | Baddies become ghosts. |
+| ✅ No Creature Collision | Same, but with animals and monsters. |
+| ✅ No Trapdoor Collision | Trapdoors? What trapdoors? |
+| ✅ No Door Collision | 🚪 Only works after reloading the level. Be patient. |
+
+---
 
 ### 🎯 Special Actions
-- **Toggle Flipmap:** Instantly trigger level flipmaps — great for debugging or chaos.
-- **Give All Keys & Puzzle Items:** Unlock every door or puzzle without effort.
-- **Give All Weapons:** Instantly equips all firearms and gear.
-- **Give Ammo & Flares:** Grants infinite or maxed-out ammunition and flares.
-- **Alternate Noclip (Air Walking):** An experimental version of noclip where Lara can walk mid-air.
+
+| Cheat | Description |
+|-------|-------------|
+| 🔁 Toggle FlipMap | Flipmap triggers manually. Good for puzzles or chaos. |
+| 🗝️ Give All Keys/Puzzle Items | No more backtracking. |
+| 🔫 Give All Weapons | Arm Lara to the teeth. |
+| 💊 Give Ammo, Meds & Flares | Everything you need in bulk. |
+| ⏹️ Finish Level | Boom. Level complete. Great for skipping buggy parts. |
+| ☁️ Alternate Noclip | Walk in air. Like Jesus, but with Uzis. |
+
+---
 
 ### ❤️ Health & Resources
-- **Unlimited Health:** Makes Lara invulnerable to all damage.
-- **Unlimited Flare Duration:** Flares burn forever — no darkness, ever.
+
+| Cheat | Description |
+|-------|-------------|
+| ✅ Unlimited Health | Lara is now immortal. |
+| ✅ Unlimited Flare Life | Eternal light. Goodbye darkness. |
 
 ---
 
-## 🛠️ Troubleshooting
+## 🧯 Troubleshooting
 
-Having trouble? Here are a few common issues and fixes:
+### ❓ Can't attach the trainer?
 
-- **Trainer won’t attach?**  
-  Make sure you launched the game via `Tomb2Cheat.exe` and not the original `Tomb2.exe`.
+- Use `Tomb2Cheat.exe`, not the original EXE.
+- Run both game and trainer **as Administrator**.
+- Ensure antivirus isn’t blocking memory access.
 
-- **No Door Collision doesn’t work?**  
-  Reload the level after enabling the cheat to apply memory changes.
+### ❗ Door collision not working?
+
+- You **must reload the level** for door memory changes to apply.
+
+### 🐛 Something’s weird?
+
+- Yeah, it’s an extreme trainer. That’s the fun.
+- Bugs = Flavor in this soup.
 
 ---
 
-## 💡 Contribution & Support
+## 📖 Dev Diary
 
-If you find this trainer helpful, consider sharing it with others or leaving feedback! Popular demand will influence whether it receives updates, improvements, or even support for other classic Tomb Raider titles.
+> _(Feel free to fill this out as the trainer evolves!)_
+
+| Date | Update |
+|------|--------|
+| `2025-XX-XX` | ✨ First public build released. |
+| `2025-XX-XX` | 🧠 Added animation softlock protection. |
+| `2025-XX-XX` | 🐞 Fixed memory misread on air cheat. |
+
+📝 **[ Add more entries here! ]**
 
 ---
 
-Created with love by **Boleklolo** 🛠️
+## 🌌 Trainer Lore
+
+> Why does this exist? What inspired you? A section for personal notes, storytelling, or random facts.
+
+📦 _Example:_
+
+> I made this trainer after getting sick of drowning during the Maria Doria levels. I wanted Lara to feel like a goddess — untouchable, unstoppable, and capable of breaking physics at will.
+
+✍️ **[ Add your own story here! ]**
+
+---
+
+## 🙏 Credits & Support
+
+Made with heart by **Boleklolo** 🧠  
+Big thanks to:
+
+- The classic Tomb Raider modding community.
+- Memory scanners, debugger tools, and lots of caffeine.
+- Everyone who stress-tests this thing and gives feedback.
+
+📧 _Reach out or suggest new features!_  
+🧵 Join the conversation at [YourSocialHandleHere] or drop feedback in the issues page if hosted.
+
+---
+
+> _“What is a Tomb Raider if not a glitch in the matrix?”_
