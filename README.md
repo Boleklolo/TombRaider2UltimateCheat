@@ -138,15 +138,17 @@ Use the GUI's checkboxes to toggle real-time cheats. No restarting needed (excep
 
 ---
 
-## 🌌 Trainer Lore
 
-> Why does this exist? What inspired you? A section for personal notes, storytelling, or random facts.
+Back in the day, there was a legendary Tomb Raider II trainer by **Mr. Bombo**, known earlier as **Mr. Cheaters**. It stirred up entire forums — people **lost their minds** over what it could do. Child me included.
 
-📦 _Example:_
+There was a certain magic to it. You’d see Lara flying, phasing through walls, swimming through the air — and you’d think, _"How the hell did they do that?"_  
 
-> I made this trainer after getting sick of drowning during the Maria Doria levels. I wanted Lara to feel like a goddess — untouchable, unstoppable, and capable of breaking physics at will.
+I wanted that power.  
+So I picked up **C++**, dove into **x86 assembly**, and eventually began learning how to manipulate **ROMs and executables**.  
+This trainer is the result of that obsession — a spiritual successor of sorts, made with love, madness, and a debugger.
 
-✍️ **[ Add your own story here! ]**
+> _"Not all kids learn hacking because of CS:GO skins. Some do it to make Lara moonwalk across Venice."_ — Boleklolo
+
 
 ---
 
