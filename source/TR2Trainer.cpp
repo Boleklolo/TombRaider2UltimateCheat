@@ -1,6 +1,6 @@
 ﻿
-// Dear ImGui: FUCK YOU  -/standalone example application for DirectX 9/-
-// With Tomb Raider II Cheat Integration
+
+// Tomb Raider II Cheat Integration
 // ====================================
 // This file combines:
 // - DirectX 9 and ImGui setup
@@ -25,13 +25,14 @@
 #include <algorithm>
 #include <functional>
 #include <memory>
+#include <unordered_set>
 #define IDI_ICON1 101  // Sexy lara icon
 // ====================================
 // Cheat Configuration Constants
 // ====================================
 void WriteOneShot(uintptr_t baseAddress, uintptr_t pointerOffset, uint16_t valueToWrite);
 // Process to attach to
-constexpr const wchar_t* processName = L"Tomb2Cheat.exe"; // Hardcoded because what fucked up fuck would fuck up the fucking name
+constexpr const wchar_t* processName = L"Tomb2Cheat.exe"; // Hardcoded because why not
 
 // Animation Softlock Fix Configuration
 constexpr short replacementAnimValue = 11; // Animation ID that resets Lara
@@ -220,7 +221,7 @@ uint8_t opcodefastRunPatched[3] = { 0xC1, 0xF8, 0x0F }; // Patched bytes
 
 // Fast jump cheat
 uintptr_t fastJumpAddress = 0x00030C70; // Address to patch for fast jump
-uint8_t opcodefastJumpOriginal[5] = { 0xC1, 0xF8, 0x10, 0x03, 0xC1 }; // Original bytes <- idk why i keep it if its gonna crash the game rofllmao
+uint8_t opcodefastJumpOriginal[5] = { 0xC1, 0xF8, 0x10, 0x03, 0xC1 }; // Original bytes <- idk why i keep it if its gonna crash the game rofllmao (edit: nvm fixed)
 // Why am I saying rofflmao so much its bad
 uint8_t opcodefastJumpPatched[5] = { 0xB8, 0x80, 0x00, 0x00, 0x00 }; // Original bytes
 
@@ -262,7 +263,6 @@ uint16_t DOZYfallspeed = 0;
 uint16_t DOZYanimState[2] = { 17, 2 }; //Magic numbers only I understand (haha)
 uint16_t DOZYanimation[2] = { 87, 0 };
 uint16_t DOZYwaterState[2] = { 1, 0 };
-// MAKE THIS CHGEAT !!!!!! RAOFLLMAO
 //Tomb2Cheat.exe+ -                 - sar eax,0F { 15 } - Run
 //Tomb2Cheat.exe+ -                 - sar eax,10 { 16 } - Jump
 //Tomb2Cheat.exe+30C70 -  000000           - mov eax,00000080 { 128 } - jump patched
@@ -317,9 +317,6 @@ struct Cheat {
 };
 std::vector<Cheat> cheats;
 bool showCheatWindow = true;
-static std::atomic<bool> levelCompleteWatcherActive{ false };
-static std::thread levelCompleteWatcherThread;
-void LevelCompleteWatcherThread(std::atomic<bool>& active);
 // Ignore this shitty shit
 void DetachFromProcess(); // Forward declaration
 DWORD GetProcessIdByName(const wchar_t* name); // Forward declaration
@@ -346,8 +343,6 @@ bool AttachToProcess() {
     }
 
     processAttached = true;
-    levelCompleteWatcherActive = true;
-    levelCompleteWatcherThread = std::thread(LevelCompleteWatcherThread, std::ref(levelCompleteWatcherActive));
     return true;
 }
 
@@ -363,10 +358,7 @@ void DetachFromProcess() {
             if (cheat.thread.joinable()) cheat.thread.join();
         }
     }
-    levelCompleteWatcherActive = false;
-    if (levelCompleteWatcherThread.joinable()) {
-        levelCompleteWatcherThread.join();
-    }
+
     if (processHandle) {
         CloseHandle(processHandle);
         processHandle = nullptr;
@@ -1543,7 +1535,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         ImGui::TextColored(ImVec4(1, 0, 0, 1), "and might get updates if it gets enough popularity");
         ImGui::Separator();
         ImGui::TextColored(ImVec4(0, 0, 1, 1), "Warning: Cheats like health, air or animations");
-        ImGui::TextColored(ImVec4(0, 0, 1, 1), "have to be reapplied when loading a different level's save");
+        ImGui::TextColored(ImVec4(0, 0, 1, 1), "have to be reapplied when loading a different level");
+        ImGui::TextColored(ImVec4(0, 1, 1, 1), "Tip: Press F1 to do that automatically.");
+
 
 
         ImGui::Separator();
@@ -1788,6 +1782,43 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
                 }
             }
         }
+        // Global F1 Hotkey for Resetting Active Checkbox Cheats
+        static bool f1Pressed = false;
+        bool currentF1State = (GetAsyncKeyState(VK_F1) & 0x8000) != 0;
+
+        if (currentF1State && !f1Pressed) {
+            // List of button cheat names to exclude
+            const std::unordered_set<std::string> buttonCheats = {
+                "Toggle FlipMap",
+                "Give All Keys/Puzzle Items",
+                "Give All Weapons",
+                "Give Ammo, Meds & Flares",
+                "Finish Level"
+            };
+
+            for (auto& cheat : cheats) {
+                // Skip button cheats
+                if (buttonCheats.find(cheat.name) != buttonCheats.end()) {
+                    continue;
+                }
+
+                // Only process checkbox cheats that are currently active
+                if (cheat.active && *cheat.active) {
+                    // Safely disable the cheat
+                    if (cheat.disableFunction) {
+                        cheat.disableFunction();
+                    }
+                    *cheat.active = false;
+
+                    // Safely re-enable the cheat
+                    if (cheat.enableFunction) {
+                        cheat.enableFunction();
+                    }
+                    *cheat.active = true;
+                }
+            }
+        }
+        f1Pressed = currentF1State;
         //// Draw an input field for integers
         //static int myValue = 0; // This stores the number the user inputs
         //ImGui::InputInt("Enter a number", &myValue);
@@ -1827,64 +1858,4 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     ::UnregisterClassW(wc.lpszClassName, wc.hInstance);
 
     return 0;
-}
-// Implement the watcher thread function
-void LevelCompleteWatcherThread(std::atomic<bool>& active) {
-    while (active) {
-        if (processAttached) {
-            uintptr_t flagAddress = 0;
-            if (ReadPointerChain(processHandle, moduleBase + baseAddressFinish,
-                { pointerOffsetFinish }, flagAddress)) {
-                uint16_t flagValue = 0;
-                if (ReadProcessMemory(processHandle, (LPCVOID)flagAddress,
-                    &flagValue, sizeof(flagValue), nullptr)) {
-                    if (flagValue == 1) {
-                        // Level complete detected - disable cheats
-                        std::vector<std::string> cheatNames = {
-                            "Climb Anywhere",
-                            "Fly (Warning: Stand still before using. Also it may break lara's rotation a bit, turn it off when lara faces towards the front.)",
-                            "Unlimited Air",
-                            "No Animation Softlock (i.e. Swan Dive death)",
-                            "No Animation Stumbles",
-                            "Unlimited Health",
-                            "Unlimited Flare Life"
-                        };
-
-                        // Record current state and disable cheats
-                        std::vector<bool> wereActive;
-                        for (const auto& name : cheatNames) {
-                            Cheat* cheat = FindCheatByName(name);
-                            if (cheat) {
-                                wereActive.push_back(*(cheat->active));
-                                if (*(cheat->active) && cheat->disableFunction) {
-                                    cheat->disableFunction();
-                                }
-                            }
-                        }
-
-                        // Wait for flag to reset to 0
-                        while (active && processAttached) {
-                            uint16_t newFlagValue = 0;
-                            if (ReadProcessMemory(processHandle, (LPCVOID)flagAddress,
-                                &newFlagValue, sizeof(newFlagValue), nullptr)){
-                                if (newFlagValue == 0) break;
-                            }
-                            std::this_thread::sleep_for(std::chrono::milliseconds(50));
-                        }
-
-                        // Re-enable cheats that were active
-                        for (size_t i = 0; i < cheatNames.size(); i++) {
-                            if (wereActive[i]) {
-                                Cheat* cheat = FindCheatByName(cheatNames[i]);
-                                if (cheat && cheat->enableFunction) {
-                                    cheat->enableFunction();
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
-    }
 }
