@@ -14,6 +14,9 @@ Made with care and caffeine by **Boleklolo**
 > ⚠️ **STEAM-ONLY NOTICE**:  
 > This trainer was made and tested **exclusively** for the **Steam version** of *Tomb Raider II*, specifically using the `Tomb2Cheat.exe` build from that release. It has **not been tested** on other versions (GOG, original CD, etc.) and **may not work properly** with them.
 
+> **UPDATE**
+> A user confirmed that it works with the GOG version :)
+
 > 🔥 **NOTE**: Cheats like **health**, **air**, or **animations** must be re-enabled after loading a new level, as the game resets memory on load.  
 > 🧠 Tip: Press `F1` in-game to reapply relevant cheats automatically.
 
