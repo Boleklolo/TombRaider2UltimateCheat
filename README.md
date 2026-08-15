@@ -2,27 +2,27 @@
 ![Made with C++](https://img.shields.io/badge/Made_with-C++-blue)
 ![Trainer for Tomb Raider 2](https://img.shields.io/badge/Trainer_for-Tomb_Raider_2-green)
 
-# 🗡️ Tomb Raider II: Extreme Trainer  
+# Tomb Raider II: Extreme Trainer  
 ### *"Unshackle Lara. Break the rules."*  
 Made with care and caffeine by **Boleklolo**
 
 ---
 
-> ⚠️ **DISCLAIMER**:  
+> **DISCLAIMER**:  
 > This trainer is **unfinished**, experimental, and a bit of a chaotic masterpiece. Some features might not work on all levels. Some might explode (figuratively). Updates will depend on popularity and user feedback.
 
-> ⚠️ **STEAM-ONLY NOTICE**:  
+>  **STEAM-ONLY NOTICE**:  
 > This trainer was made and tested **exclusively** for the **Steam version** of *Tomb Raider II*, specifically using the `Tomb2Cheat.exe` build from that release. It has **not been tested** on other versions (GOG, original CD, etc.) and **may not work properly** with them.
 
 > **UPDATE**
 > A user confirmed that it works with the GOG version :)
 
-> 🔥 **NOTE**: Cheats like **health**, **air**, or **animations** must be re-enabled after loading a new level, as the game resets memory on load.  
-> 🧠 Tip: Press `F1` in-game to reapply relevant cheats automatically.
+>  **NOTE**: Cheats like **health**, **air**, or **animations** must be re-enabled after loading a new level, as the game resets memory on load.  
+>  Tip: Press `F1` in-game to reapply relevant cheats automatically.
 
 ---
 
-## 📜 Table of Contents
+##  Table of Contents
 
 - [Getting Started](#-getting-started)
 - [Cheat Categories](#-cheat-categories)
@@ -36,7 +36,7 @@ Made with care and caffeine by **Boleklolo**
 
 ---
 
-## 🏃 Updated Speedrun!
+##  Updated Speedrun!
 
 Everyone knows this video of Mr. Cheater's.
 
@@ -48,9 +48,9 @@ So why not beat their time?
 [![Tomb Raider 2 Extreme Speedrun in 15:04 (New!)](https://img.youtube.com/vi/up28E8cQvhY/maxresdefault.jpg)](https://youtu.be/up28E8cQvhY)
 
 
-## 🚀 Getting Started
+##  Getting Started
 
-### ✅ Launch Sequence
+###  Launch Sequence
 
 1. **Use `Tomb2Cheat.exe`**  
    Not the default `Tomb2.exe`. If you don't it may still work but it contains some invulnerability code like no spike or lava deaths.
@@ -67,55 +67,55 @@ Toggle cheats with checkboxes. Most apply immediately. Some require reloading a 
 
 ---
 
-## 🧰 Cheat Categories
+##  Cheat Categories
 
 ---
 
-### 🏃 Movement Enhancements
+###  Movement Enhancements
 
 | Cheat | Description |
 |-------|-------------|
-| ✅ Noclip | (DOOM-style) Walk through anything. Works well with slope fix. |
-| ✅ Ignore Water | Lara behaves like a scuba diver everywhere. Walks/swims on land. |
-| ✅ Climb Anywhere | Lara treats every wall as a ladder. Rock climber hands. |
-| ✅ Walkable Slopes | Makes steep angles walkable. Better when combined with Noclip. |
-| ✅ Fly | Hold still before activating. May mess up Lara’s rotation temporarily. Turn off and on again to fix. |
-| ✅ Fast Running | Gotta go fast. |
-| ✅ Fast Jump | Spring-loaded legs. Bounce forward with light speed. |
-| ✅ Slow Fall From Edges | Lara gently drifts when walking off ledges. |
-| ✅ Unlimited Air | Breathe underwater like a sea god. |
-| ✅ Unlimited Air Time | Keeps Lara from starting the fall animation. |
-| ✅ No Animation Softlock | Prevents animation-triggered death (e.g., Swan Dive death). |
-| ✅ No Animation Stumbles | Lara keeps her cool and footing - no tripping on slopes or traps. |
+|  Noclip | (DOOM-style) Walk through anything. Works well with slope fix. |
+|  Ignore Water | Lara behaves like a scuba diver everywhere. Walks/swims on land. |
+|  Climb Anywhere | Lara treats every wall as a ladder. Rock climber hands. |
+|  Walkable Slopes | Makes steep angles walkable. Better when combined with Noclip. |
+|  Fly | Hold still before activating. May mess up Lara’s rotation temporarily. Turn off and on again to fix. |
+|  Fast Running | Gotta go fast. |
+|  Fast Jump | Spring-loaded legs. Bounce forward with light speed. |
+|  Slow Fall From Edges | Lara gently drifts when walking off ledges. |
+|  Unlimited Air | Breathe underwater like a sea god. |
+|  Unlimited Air Time | Keeps Lara from starting the fall animation. |
+|  No Animation Softlock | Prevents animation-triggered death (e.g., Swan Dive death). |
+|  No Animation Stumbles | Lara keeps her cool and footing - no tripping on slopes or traps. |
 
 ---
 
-### 🧱 Collision Modifications
+###  Collision Modifications
 
 | Cheat | Description |
 |-------|-------------|
-| ✅ No Static Object Collision | Walk through walls, pillars, or immovable world objects. |
-| ✅ No Baddie Collision | Walk through human enemies like they're fog. |
-| ✅ No Creature Collision | Same for animals, monsters, and other non-human threats. |
-| ✅ No Trapdoor Collision | Trapdoors? What trapdoors? |
-| ✅ No Door Collision | Walk through locked doors. Requires level reload to take effect. |
+|  No Static Object Collision | Walk through walls, pillars, or immovable world objects. |
+|  No Baddie Collision | Walk through human enemies like they're fog. |
+|  No Creature Collision | Same for animals, monsters, and other non-human threats. |
+|  No Trapdoor Collision | Trapdoors? What trapdoors? |
+|  No Door Collision | Walk through locked doors. Requires level reload to take effect. |
 
 ---
 
-### 🎯 Special Actions
+###  Special Actions
 
 | Cheat | Description |
 |-------|-------------|
-| 🔁 Toggle FlipMap | Triggers flipmaps (like water rising/draining or geometry shifts). May affect puzzles. |
-| 🗝️ Give All Keys/Puzzle Items | No more backtracking. |
-| 🔫 Give All Weapons | Arm Lara to the teeth. |
-| 💊 Give Ammo, Meds & Flares | Rverything you need in bulk. |
-| ⏹️ Finish Level |  Boom. Level complete. Great for skipping buggy parts. |
-| ☁️ Alternate Noclip | Lara walks midair like a divine being. Similar to regular Noclip but preserves some movement logic. |
+|  Toggle FlipMap | Triggers flipmaps (like water rising/draining or geometry shifts). May affect puzzles. |
+|  Give All Keys/Puzzle Items | No more backtracking. |
+|  Give All Weapons | Arm Lara to the teeth. |
+|  Give Ammo, Meds & Flares | Rverything you need in bulk. |
+|  Finish Level |  Boom. Level complete. Great for skipping buggy parts. |
+|  Alternate Noclip | Lara walks midair like a divine being. Similar to regular Noclip but preserves some movement logic. |
 
 ---
 
-### ❤️ Health & Resources
+###  Health & Resources
 
 | Cheat | Description |
 |-------|-------------|
@@ -124,25 +124,25 @@ Toggle cheats with checkboxes. Most apply immediately. Some require reloading a 
 
 ---
 
-## 🧯 Troubleshooting
+##  Troubleshooting
 
-### ❓ Can't attach the trainer?
+###  Can't attach the trainer?
 
 - Use the **Steam version** and launch `Tomb2Cheat.exe`
 - Run both the trainer and game as **Administrator**
 - Disable antivirus that may block memory manipulation
 
-### ❗ Door collision not working?
+###  Door collision not working?
 
 - You **must reload the level** after enabling the cheat for door memory edits to apply.
 
-### 🐛 Something’s weird?
+###  Something’s weird?
 
 - It’s meant to be weird. It’s called *Extreme Trainer* for a reason.
 - Bugs are features, mostly.
 
 
-## 🧠 Trainer Lore
+##  Trainer Lore
 
 Back in the day, there was a legendary Tomb Raider II cheat video by **Mr. Bombo**, aka **Mr. Cheater**. It amazed people, it amaze **me**.
 
@@ -151,13 +151,11 @@ I had no idea how it was done - but I knew I wanted to do it too.
 
 So I learned **C++**, studied **x86 assembly**, and eventually figured out how to bend executables to my will. This trainer is my tribute to that era.
 
-> _“Not all kids learn hacking for CS:GO skins. Some just want Lara to moonwalk across Venice.”_ - Boleklolo
-
 ---
 
-## 🙏 Credits & Support
+##  Credits & Support
 
-Made with heart, coffee, and `ReadProcessMemory()` by **Boleklolo** 🧠
+Made with heart, coffee, and `ReadProcessMemory()` by **Boleklolo** 
 
 Special thanks to:
 
@@ -166,8 +164,6 @@ Special thanks to:
 - Everyone who stress-tests this thing and shares ideas
 
 ---
-
-> _“What is a Tomb Raider if not a glitch in the matrix?”_
 
 
 ## Legal
