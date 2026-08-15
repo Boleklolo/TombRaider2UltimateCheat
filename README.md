@@ -119,8 +119,8 @@ Toggle cheats with checkboxes. Most apply immediately. Some require reloading a 
 
 | Cheat | Description |
 |-------|-------------|
-| ✅ Unlimited Health | Lara becomes invincible. Falls, bullets, and spikes? Laughable. |
-| ✅ Unlimited Flare Life | Eternal light. Goodbye darkness. |
+|  Unlimited Health | Lara becomes invincible. Falls, bullets, and spikes? Laughable. |
+|  Unlimited Flare Life | Eternal light. Goodbye darkness. |
 
 ---
 
